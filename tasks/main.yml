@@ -1,0 +1,42 @@
+- name: docker | Uninstall unrequired packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+  with_items: "{{ docker_all_packages_to_uninstall }}"
+
+- include_tasks: install_on_debian
+  when: (ansible_distribution == "Debian") or (ansible_distribution == "Ubuntu")
+
+- include_tasks: install_on_rhel
+  when: (ansible_distribution == "CentOS") or (ansible_distribution == "RHEL")
+
+- name: Docker | Install docker packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  with_items: 
+    - "{{ docker_all_packages_to_install }}"
+
+- name: Docker | Enable and start docker service
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - docker
+
+- name: Docker | Verify installation
+  block:
+
+  - name: Verify installation with hello-world
+    ansible.builtin.shell: |
+      "docker run hello-world"
+    register: docker_output
+
+  - ansible.builtin.assert:
+      that: "'Hello' in docker_output.stdout"
+      success_msg: "Docker has been installed on {{ inventory_hostname }}"
+
+  - name: Docker | Remove hello-world image
+    ansible.builtin.shell: |
+      "docker rmi -f hello-world"

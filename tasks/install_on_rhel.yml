@@ -1,0 +1,17 @@
+- name: rhel | Pre-install required packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ docker_rhel_packages_to_preinstall }}"
+
+- name: rhel | Add official docker repo
+  ansible.builtin.yum_repository:
+    name: "{{ docker_rhel_repo_name }}"
+    description: "{{ docker_rhel_repo_description }}"
+    baseurl: "{{ docker_rhel_repo_link }}"
+
+- name: rhel | Install GPG key for docker repository
+  ansible.builtin.rpm_key:
+    state: present
+    key: "{{ docker_rhel_repo_gpg_link }}"

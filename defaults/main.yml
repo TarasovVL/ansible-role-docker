@@ -1,0 +1,37 @@
+---
+###
+docker_all_packages_to_install:
+  - "docker-ce"
+  - "docker-compose-plugin"
+  - "docker-ce-cli"
+  - "containerd.io"
+docker_all_packages_to_uninstall:
+  - "containerd"
+  - "docker"
+  - "docker-client"
+  - "docker-client-latest"
+  - "docker-common"
+  - "docker-engine"
+  - "docker-latest"
+  - "docker-latest-logrotate"
+  - "docker-logrotate"
+  - "docker.io"
+  - "podman"
+  - "runc"
+###
+docker_rhel_packages_to_preinstall:  
+  - "yum-utils"
+docker_rhel_repo_name: "docker-ce"
+docker_rhel_repo_description: "Docker CE official repository"
+docker_rhel_repo_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/$releasever/$basearch/stable"
+docker_rhel_repo_gpg_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
+###
+docker_debian_packages_to_preinstall:
+  - "ca-certificates"
+  - "curl"
+  - "gnupg"
+  - "lsb-release"
+docker_debian_repo_gpg_dest: "/etc/apt/keyrings"
+docker_debian_repo_gpg_key: "docker.gpg"
+docker_debian_repo_gpg_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
+docker_debian_repo_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"

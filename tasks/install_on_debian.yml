@@ -1,0 +1,25 @@
+  - name: debian | Pre-install required packages
+    ansible.builtin.apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - "{{ docker_debian_packages_to_preinstall }}"
+
+  - name: debian | Create dir for gpg key
+    ansible.builtin.file:
+      state: directory
+      path: "{{ docker_debian_repo_gpg_dest }}"
+
+  - name: debian | Get gpg key
+    ansible.builtin.get_url:
+      url: "{{ docker_debian_repo_gpg_link }}"
+      dest: "{{ docker_debian_repo_gpg_dest }}/{{ docker_debian_repo_gpg_key }}"
+    
+  - name: debian | Add repo
+    ansible.builtin.apt_repository:
+      repo: "deb [arch=amd64 signed-by={{ docker_debian_repo_gpg_dest }}/{{ docker_debian_repo_gpg_key }}] {{ docker_debian_repo_link }} {{ ansible_distribution_release }} stable"
+      state: present
+    
+  - name: debian | Update packages
+    ansible.builtin.apt:
+      update_cache: yes
