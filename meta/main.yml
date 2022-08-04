@@ -16,13 +16,13 @@ galaxy_info:
         - 9
     - name: Ubuntu
       versions:
-        - 18.04
-        - 20.04
-        - 22.04
+        - jammy
+        - focal
+        - bionic
     - name: Debian
       versions:
-        - 9
-        - 10
-        - 11
+        - stretch
+        - bullseye
+        - buster
   galaxy_tags:
     - docker
