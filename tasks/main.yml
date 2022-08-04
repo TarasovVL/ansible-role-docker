@@ -40,3 +40,6 @@
   - name: Docker | Remove hello-world image
     ansible.builtin.shell: |
       "docker rmi -f hello-world"
+
+- include_tasks: configure_prune
+  when: docker_prune_use|bool

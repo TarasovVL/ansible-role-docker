@@ -1,0 +1,9 @@
+- name: Docker | Configure cron to start prune
+  ansible.builtin.cron:
+    user: root
+    day: "{{ docker_prune_cron.day }}"
+    hour: "{{ docker_prune_cron.hour }}"
+    minute: "{{ docker_prune_cron.minute }}"
+    cron_file: ansible_docker_prune_{{ item }}
+    job: "docker {{ item }} prune -af --filter 'until={{ docker_prune_object_age }}'"
+  with_items: "{{ docker_prune_objects }}"

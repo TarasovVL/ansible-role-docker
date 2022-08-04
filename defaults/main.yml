@@ -35,3 +35,15 @@ docker_debian_repo_gpg_dest: "/etc/apt/keyrings"
 docker_debian_repo_gpg_key: "docker.gpg"
 docker_debian_repo_gpg_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg"
 docker_debian_repo_link: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"
+###
+docker_prune_use: false
+docker_prune_objects:
+  - "images"
+  - "containers"
+  - "volumes"
+  - "networks"
+docker_prune_object_age: "7d"
+docker_prune_cron:
+  day: "*"
+  hour: "23"
+  minute: "00"
